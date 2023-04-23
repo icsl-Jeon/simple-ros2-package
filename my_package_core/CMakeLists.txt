@@ -1,27 +1,29 @@
 cmake_minimum_required(VERSION 3.5)
 project(my_package_core)
+set(LIBRARY_LIST "library_a" "library_b")
 
-set(LIBRARY_NAME core_library)
+foreach(LIBRARY ${LIBRARY_LIST})
+  if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY})
 
-file(GLOB HEADER_FILES "include/my_package_core/*.hpp")
-file(GLOB SOURCE_FILES "src/*.cpp")
+    file(GLOB LIBRARY_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/*.cpp")
+    file(GLOB LIBRARY_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/*.hpp")
 
-set(LIBRARY_SOURCES "")
-list(APPEND LIBRARY_SOURCES ${SOURCE_FILES} ${HEADER_FILES})
+    add_library(${LIBRARY} SHARED ${LIBRARY_SOURCES} ${LIBRARY_HEADERS})
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY})
 
-include_directories(include)
-add_library(${LIBRARY_NAME} SHARED ${LIBRARY_SOURCES})
-install(
-  TARGETS ${LIBRARY_NAME}
-  EXPORT ${PROJECT_NAME}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib)
-install(FILES ${HEADER_FILES} DESTINATION include/${PROJECT_NAME})
+    install(
+      TARGETS ${LIBRARY}
+      EXPORT ${LIBRARY}
+      LIBRARY DESTINATION lib
+      INCLUDES
+      DESTINATION include)
+    install(FILES ${LIBRARY_HEADERS} DESTINATION include/${LIBRARY})
+    export(TARGETS ${LIBRARY}
+           FILE "${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY}Config.cmake")
 
-export(TARGETS ${LIBRARY_NAME}
-       FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")
-
-install(
-  EXPORT ${PROJECT_NAME}
-  FILE "${PROJECT_NAME}Config.cmake"
-  DESTINATION share/${PROJECT_NAME}/cmake)
+    install(
+      EXPORT ${LIBRARY}
+      FILE "${LIBRARY}Config.cmake"
+      DESTINATION share/${LIBRARY}/cmake)
+  endif()
+endforeach()
