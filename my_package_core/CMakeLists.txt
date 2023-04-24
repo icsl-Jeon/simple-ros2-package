@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(my_package_core)
 set(LIBRARY_LIST "library_a" "library_b")
-
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 foreach(LIBRARY ${LIBRARY_LIST})
   if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY})
 
