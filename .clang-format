@@ -1,5 +1,4 @@
 IndentWidth: 2
 ColumnLimit: 80
-BasedOnStyle: Google
 KeepEmptyLinesAtTheStartOfBlocks: true
 SpacesInParentheses: false

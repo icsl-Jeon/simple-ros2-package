@@ -14,7 +14,7 @@ ament_target_dependencies(visualizer rclcpp)
 target_link_libraries(visualizer library_a library_b)
 
 add_library(wrapper wrapper/Wrapper.cpp wrapper/Wrapper.hpp)
-ament_target_dependencies(wrapper rclcpp)
+ament_target_dependencies(wrapper rclcpp std_msgs)
 target_link_libraries(wrapper library_a library_b visualizer)
 
 add_executable(MyRosNode main.cpp)

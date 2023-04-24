@@ -7,13 +7,13 @@
 
 namespace visualizer {
 class Visualizer : rclcpp::Node {
- private:
-  library_a::LibraryA library_a_;
-  library_b::LibraryB library_b_;
+private:
+  library_a::ClassA class_a;
+  library_b::ClassB class_b;
 
- public:
+public:
   Visualizer();
 };
-}  // namespace visualizer
+} // namespace visualizer
 
 #endif /* HEADER_VISUALIZER */
