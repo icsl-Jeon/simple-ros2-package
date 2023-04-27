@@ -21,11 +21,6 @@ add_executable(MyRosNode main.cpp)
 target_link_libraries(MyRosNode wrapper)
 ament_target_dependencies(MyRosNode rclcpp)
 
-install(
-  TARGETS MyRosNode
-  LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  RUNTIME DESTINATION bin
-  INCLUDES
-  DESTINATION include)
+install(TARGETS MyRosNode DESTINATION lib/${PROJECT_NAME})
+
 ament_package()
