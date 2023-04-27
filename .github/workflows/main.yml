@@ -22,3 +22,4 @@ jobs:
         uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: my_package my_package_ros2
+          target-ros2-distro: foxy
