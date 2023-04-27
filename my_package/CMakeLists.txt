@@ -9,7 +9,6 @@ foreach(LIBRARY ${LIBRARY_LIST})
     file(GLOB LIBRARY_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY}/*.hpp")
 
     add_library(${LIBRARY} SHARED ${LIBRARY_SOURCES} ${LIBRARY_HEADERS})
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/${LIBRARY})
 
     install(
       TARGETS ${LIBRARY}
