@@ -9,7 +9,7 @@ Wrapper::Wrapper() : Node("wrapper") {
 void Wrapper::TimerCallback() {
   double a_variable = class_a_.GetVariable();
   double b_variable = class_b_.GetVariable();
-  auto msg = std_msgs::build<std_msgs::msg::Float64>().data(a_variable);
+  auto msg = std_msgs::build<std_msgs::msg::Float64>().data(b_variable);
   publisher_->publish(msg);
-  RCLCPP_INFO(this->get_logger(), "Publishing: '%d'", msg.data);
+  RCLCPP_INFO(this->get_logger(), "Publishing: '%f'", msg.data);
 }

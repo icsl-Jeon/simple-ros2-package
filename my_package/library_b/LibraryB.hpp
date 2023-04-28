@@ -5,7 +5,7 @@
 namespace library_b {
 class ClassB {
 private:
-  double internal_variable_{0.0};
+  double internal_variable_{1.0};
   library_a::ClassA library_a_;
 
 public:
