@@ -4,8 +4,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float64.hpp"
 
-#include "library_a/LibraryA.hpp"
-#include "library_b/LibraryB.hpp"
+#include "my_package/library_a/LibraryA.hpp"
+#include "my_package/library_b/LibraryB.hpp"
 #include "visualizer/Visualizer.hpp"
 
 class Wrapper : public rclcpp::Node {

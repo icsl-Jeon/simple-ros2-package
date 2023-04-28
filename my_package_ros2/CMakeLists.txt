@@ -6,7 +6,6 @@ find_package(ament_cmake REQUIRED)
 find_package(library_a REQUIRED)
 find_package(library_b REQUIRED)
 find_package(rclcpp REQUIRED)
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(visualizer visualizer/Visualizer.cpp visualizer/Visualizer.hpp)
