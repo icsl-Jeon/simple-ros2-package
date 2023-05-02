@@ -1,0 +1,4 @@
+#ifndef HEADER_WRAPPER
+#define HEADER_WRAPPER
+
+#endif /* HEADER_WRAPPER */
