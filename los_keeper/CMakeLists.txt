@@ -1,57 +1,30 @@
 cmake_minimum_required(VERSION 3.5)
 project(los_keeper)
 
-find_package(PCL REQUIRED)
-find_package(Eigen3 REQUIRED NO_MODULE)
-include_directories(${EIGEN3_INCLUDE_DIRS})
+find_package(Eigen3 REQUIRED)
+find_package(PCL REQUIRED COMPONENTS common)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-function(add_los_library library_folder dependency_list)
-  message("found library: ${library_folder}")
-  list(APPEND ${LIBRARY_LIST} ${library_folder})
-  file(GLOB LIBRARY_SOURCES
-       "${CMAKE_CURRENT_SOURCE_DIR}/${library_folder}/*.cpp")
-  file(GLOB LIBRARY_HEADERS
-       "${CMAKE_CURRENT_SOURCE_DIR}/${library_folder}/*.hpp")
-  add_library(${library_folder} SHARED ${LIBRARY_SOURCES} ${LIBRARY_HEADERS})
-  target_link_libraries(${library_folder} ${dependency_list})
+file(GLOB_RECURSE LIBRARY_HDRS "include/los_keeper/*.h")
+file(GLOB_RECURSE LIBRARY_SRCS "src/*.cc")
+file(GLOB TEST_SRCS "test/*.cc")
 
-  install(
-    TARGETS ${library_folder}
-    EXPORT ${library_folder}
-    LIBRARY DESTINATION lib
-    INCLUDES
-    DESTINATION include)
-  install(FILES ${LIBRARY_HEADERS} DESTINATION include/${LIBRARY})
-  export(TARGETS ${library_folder}
-         FILE "${CMAKE_CURRENT_BINARY_DIR}/${library_folder}Config.cmake")
+add_library(${PROJECT_NAME} STATIC ${LIBRARY_SRCS} ${LIBRARY_HDRS})
+target_link_libraries(${PROJECT_NAME} ${PCL_LIBRARIES})
+target_include_directories(
+  ${PROJECT_NAME}
+  PUBLIC ${EIGEN_INCLUDE_DIR} ${PCL_INCLUDE_DIRS}
+         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include> ${EIGEN_INCLUDE_DIR} ${PCL_INCLUDE_DIRS})
 
-  install(
-    EXPORT ${library_folder}
-    FILE "${library_folder}Config.cmake"
-    DESTINATION share/${library_folder}/cmake)
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include DESTINATION .)
+install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}Config)
+install(EXPORT ${PROJECT_NAME}Config DESTINATION share/${PROJECT_NAME}/cmake)
 
-endfunction()
-
-add_los_library(obstacle_manager "${PCL_COMMON}")
-add_los_library(target_manager "")
-
-add_library(los_keeper INTERFACE)
-target_link_libraries(
-  los_keeper
-  INTERFACE obstacle_manager
-  INTERFACE target_manager)
-install(
-  TARGETS los_keeper
-  EXPORT los_keeper
-  LIBRARY DESTINATION lib
-  INCLUDES
-  DESTINATION include)
-
-export(TARGETS los_keeper
-       FILE "${CMAKE_CURRENT_BINARY_DIR}/los_keeperConfig.cmake")
-install(
-  EXPORT los_keeper
-  FILE los_keeperConfig.cmake
-  NAMESPACE los_keeper::
-  DESTINATION share/los_keeper/cmake)
+enable_testing()
+find_package(GTest REQUIRED)
+foreach(TEST_SRC ${TEST_SRCS})
+  get_filename_component(TEST_NAME ${TEST_SRC} NAME_WE)
+  add_executable(${TEST_NAME} ${TEST_SRC})
+  target_link_libraries(${TEST_NAME} ${PROJECT_NAME} GTest::GTest GTest::Main)
+  add_test(${TEST_NAME} ${TEST_NAME})
+endforeach()

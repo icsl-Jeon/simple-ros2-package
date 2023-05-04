@@ -1,5 +1,5 @@
-#ifndef HEADER_OBSTACLEMANAGER
-#define HEADER_OBSTACLEMANAGER
+#ifndef HEADER_OBSTACLE_MANAGER
+#define HEADER_OBSTACLE_MANAGER
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
@@ -11,6 +11,10 @@ class ObstacleManager {
 private:
   pcl::PointCloud<pcl::PointXYZ> cloud_;
   Eigen::Affine3d pose_;
+  std::string name_{"ObstacleManager"};
+
+public:
+  std::string GetName() const;
 };
 } // namespace los_keeper
-#endif /* HEADER_OBSTACLEMANAGER */
+#endif /* HEADER_OBSTACLE_MANAGER */
