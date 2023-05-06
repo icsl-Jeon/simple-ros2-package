@@ -10,4 +10,5 @@ void LosServer::TimerCallback() {
 LosServer::LosServer() : Node("server_node") {
   timer_ =
       this->create_wall_timer(1s, std::bind(&LosServer::TimerCallback, this));
+  robot_position_ = Eigen::Vector3d::Zero();
 }
